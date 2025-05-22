@@ -1,50 +1,53 @@
 import streamlit as st
 
+# --- 사이드바 (슬라이더) ---
+st.sidebar.title("슬라이더")
+slider_val = st.sidebar.slider("값 선택", 0, 100, 50)
 
-st.set_page_config(page_title="문서 작성 예제", layout="centered")
+# --- 탭 구성 ---
+tab1, tab2, tab3 = st.tabs(["탭 01", "탭 02", "탭 03"])
 
-# 제목
-st.title("📘 Streamlit 문서 작성 예제")
+with tab1:
+    st.write("탭 01 내용")
+
+    # 2x2 레이아웃 구성
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("### 🧱 레이아웃 01")
+        st.info(f"슬라이더 값: {slider_val}")
+    with col2:
+        st.markdown("### 🧱 레이아웃 02")
+        st.success("오른쪽 상단 영역")
+
+    col3, col4 = st.columns(2)
+    with col3:
+        st.markdown("### 🧱 레이아웃 03")
+        st.warning("왼쪽 하단 영역")
+    with col4:
+        st.markdown("### 🧱 레이아웃 04")
+        st.error("오른쪽 하단 영역")
+
+with tab2:
+    st.write("탭 02 내용")
+    
+  
+    import datetime
+    name = st.text_input("이름을 입력하세요")
+    age = st.number_input("나이를 입력하세요", min_value=0, max_value=120)
+    birthdate = st.date_input("생년월일 선택")
+    hobby = st.selectbox("취미 선택", ["독서", "운동", "게임", "음악"])
+    agree = st.checkbox("이용 약관에 동의합니다")
+    file = st.file_uploader("파일 업로드")
 
 
-st.header("1. 기본 텍스트 출력")
-
-st.write(" 이것은 `st.write()`를 사용한 텍스트입니다.")
-
-st.text("이것은 형식 없는`st.write()` 텍스트입니다.")
-
-# 마크다운 사용
-st.markdown("**굵은 글씨**와 *기울임 글씨* 사용하기")
-st.markdown("> 인용구 스타일")
-st.markdown("---")
-
-# 코드 블록 출력
-st.code("""
-def hello():
-    print("Hello, Streamlit!")
-""", language='python')
-
-# 표 출력
-st.header("2. 표 출력")
-import pandas as pd
-df = pd.DataFrame({
-    "이름": ["홍길동", "이몽룡"],
-    "나이": [29, 34]
-})
-st.dataframe(df)
+    if st.button("제출"):
+        st.success(f"{name}님({age}세), 제출 완료!")
+        st.markdown("### 📋 입력 결과")
+        st.write(f"🙋 이름: {name}")
+        st.write(f"🎂 나이: {age}세")
+        st.write(f"📅 생일: {birthdate}")
+        st.write(f"🎨 당신의 취미는 : {hobby}")
 
 
-# 이미지 출력
-st.header("3. 이미지 출력")
-st.image("https://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg", width=300)
-
-# 가운데 정렬 스타일 적용
-styled_df = df.style.set_properties(**{
-    'text-align': 'center'
-}).set_table_styles([
-    {'selector': 'th', 'props': [('text-align', 'center')]}  # 헤더도 가운데 정렬
-])
-
-# 표 출력
-st.dataframe(styled_df, use_container_width=True)
-
+with tab3:
+    st.write("탭 03 내용")
