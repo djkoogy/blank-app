@@ -47,3 +47,4 @@ styled_df = df.style.set_properties(**{
 
 # 표 출력
 st.dataframe(styled_df, use_container_width=True)
+
