@@ -2,10 +2,25 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+
+# 기본 설정
+st.set_page_config(layout="wide")
+
+st.title("📊 대한민국 인구 대시보드")
+
+
 @st.cache_data
 def load_data():
     df = pd.read_csv("data/인구_2025.csv", header=[0, 1])
-    df.columns = df.columns.map(lambda x: x[0] if x[0] == '행정구역(시군구)별' else f"{x[0]}|{x[1]}")
+    new_columns = []
+    for col in df.columns:
+        if col[0] == '행정구역(시군구)별':
+            new_columns.append('행정구역(시군구)별')
+        else:
+            new_columns.append(f"{col[0]}|{col[1]}")
+
+    df.columns = new_columns
+
     df = df.melt(id_vars="행정구역(시군구)별", var_name="구분", value_name="인구수")
     df[["연도", "성별"]] = df["구분"].str.split("|", expand=True)
     df["성별"] = df["성별"].replace({
@@ -22,9 +37,6 @@ def load_data():
 
 df = load_data()
 
-# 기본 설정
-st.set_page_config(layout="wide")
-st.title("📊 대한민국 인구 대시보드")
 
 # ---------------------
 # 사이드바
